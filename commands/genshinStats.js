@@ -1,6 +1,4 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { request } = require('undici');
-
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,10 +11,9 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const query = interaction.options.getString('item');
-		const result = await request(`https://https://api.genshin.dev/characters/${query}`);
-		const { list } = await result.body.json();
-		
-		console.log(list);
-		return interaction.reply('u are gay!');
+			const response = await fetch(`https://api.genshin.dev/characters/${query}`);
+			var data = await response.json();
+			console.log(data);
+		return interaction.reply(`${data.name} is his name and ${data.title} is his title gay\nHis vision is ${data.vision} and he uses ${data.weapon}\nHe works with ${data.affiliation} in ${data.nation}`);
 	},
 };
